@@ -13,11 +13,11 @@ public class Broadcaster {
     private static final List<Consumer<String>> listeners = new LinkedList<>();
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public static synchronized void register(Consumer<String> listener) {
+    public static synchronized void register(final Consumer<String> listener) {
         listeners.add(listener);
     }
 
-    public static synchronized void unregister(Consumer<String> listener) {
+    public static synchronized void unregister(final Consumer<String> listener) {
         listeners.remove(listener);
     }
 

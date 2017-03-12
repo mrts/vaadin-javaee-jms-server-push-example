@@ -17,10 +17,10 @@ import java.util.function.Consumer;
 @Theme("serverpushexampletheme")
 public class ReceiveMessageUI extends UI implements Consumer<String> {
 
-    final VerticalLayout messages = new VerticalLayout();
+    private final VerticalLayout messages = new VerticalLayout();
 
     @Override
-    protected void init(VaadinRequest vaadinRequest) {
+    protected void init(final VaadinRequest vaadinRequest) {
         messages.addComponent(new Label("<h2>Received messages</h2>", ContentMode.HTML));
         setContent(messages);
         Broadcaster.register(this);
@@ -33,7 +33,7 @@ public class ReceiveMessageUI extends UI implements Consumer<String> {
     }
 
     @Override
-    public void accept(String message) {
+    public void accept(final String message) {
         access(() -> messages.addComponent(new Label(message)));
     }
 

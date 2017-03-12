@@ -1,8 +1,5 @@
 package com.serverpushexample;
 
-import javax.ejb.EJB;
-import javax.inject.Inject;
-
 import com.serverpushexample.messaging.MessageSenderBean;
 import com.vaadin.annotations.Theme;
 import com.vaadin.cdi.CDIUI;
@@ -14,15 +11,17 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import javax.ejb.EJB;
+
 @CDIUI("send-message")
 @Theme("serverpushexampletheme")
 public class SendMessageUI extends UI {
 
     @EJB
-    MessageSenderBean sender;
+    private MessageSenderBean sender;
 
     @Override
-    protected void init(VaadinRequest vaadinRequest) {
+    protected void init(final VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
         layout.addComponent(new Label("<h2>Sending messages</h2>", ContentMode.HTML));
 
