@@ -1,40 +1,42 @@
 package com.serverpushexample;
 
-import javax.servlet.annotation.WebServlet;
+import javax.ejb.EJB;
+import javax.inject.Inject;
 
+import com.serverpushexample.messaging.MessageSenderBean;
 import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.cdi.CDIUI;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-/**
- * This UI is the application entry point. A UI may either represent a browser window (or tab) or some part of
- * a html page where a Vaadin application is embedded.
- * <p>
- * The UI is initialized using {@link #init(VaadinRequest)}. This method is intended to be overridden to add
- * component to the user interface and initialize non-component functionality.
- */
 @CDIUI("send-message")
 @Theme("serverpushexampletheme")
 public class SendMessageUI extends UI {
 
+    @EJB
+    MessageSenderBean sender;
+
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
+        layout.addComponent(new Label("<h2>Sending messages</h2>", ContentMode.HTML));
 
-        final TextField message = new TextField();
-        message.setCaption("Type the message to send here:");
+        final TextField messageField = new TextField();
+        messageField.setCaption("Type the message to send here:");
 
         Button button = new Button("Send message");
-        button.addClickListener(e -> layout.addComponent(new Label("Sent '" + message.getValue() + "'")));
+        button.addClickListener(e -> {
+            final String message = messageField.getValue();
+            sender.send(message);
+            layout.addComponent(new Label("Sent message '" + message + "'"));
+        });
 
-        layout.addComponents(message, button);
+        layout.addComponents(messageField, button);
 
         setContent(layout);
     }
